@@ -15,26 +15,26 @@
   <body>
     <header>
     <!-- navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
-      <a class="navbar-brand" href="#"><i class="fas fa-list-alt" style="display: block; color: green; font-size: 50px;"></i></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="d-none collapse navbar-collapse" id="navbarNav">
-        <div class="navbar-nav h2 ml-auto container">
-          <a class="nav-link" href="#">Home</a>
-          <a class="nav-link active" href="#">New Task</a>
-          <a class="nav-link" href="#">Task List</a>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+        <a class="navbar-brand" href="#"><i class="fas fa-list-alt" style="display: block; color: green; font-size: 50px;"></i></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <div class="navbar-nav h2 ml-auto container">
+            <a class="nav-link" href="#">Home</a>
+            <a class="nav-link active" href="#">New Task</a>
+            <a class="nav-link" href="#">Task List</a>
+          </div>
         </div>
-      </div>
-    </nav>
-  </header>
+      </nav>
+    </header>
     <div class="container">
         <h1 class="display-4 text-center my-4">New Task</h1>
         <form>
             <div class="form-group">
                 <label for="taskName">Task Name</label>
-                <input type="text" class="form-control" id="taskName">
+                <input type="text" class="form-control" id="taskName" placeholder>
             </div>
             <div class="form-group">
                 <label for="taskDescription">Task Description</label>
@@ -91,18 +91,18 @@
             <button type="submit" class="btn btn-secondary mx-3">Cancel</button>
             
             <!-- Button trigger modal -->
-<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteTask">
-    <i class="fas fa-trash-alt"></i>
-  </button>
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteTask">
+                <i class="fas fa-trash-alt"></i>
+            </button>
   
-  <!-- Modal -->
-  <div class="modal fade" id="deleteTask" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <!-- Modal -->
+  <div class="modal fade" id="deleteTask" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Delete Task</h5>
+          <h5 class="modal-title">Delete Task</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+            <span>&times;</span>
           </button>
         </div>
         <div class="modal-body">
@@ -115,9 +115,6 @@
       </div>
     </div>
   </div>
-
-
-
         </form>
 
 
