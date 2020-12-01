@@ -1,10 +1,13 @@
 .taskGridHeader {
     font-weight: 700;
 }
-
-
-
 #taskGrid p {
     margin: 0;
     padding: 0;
+}
+
+nav i {
+    display: block;
+    color: green;
+    font-size: 50px;
 }
