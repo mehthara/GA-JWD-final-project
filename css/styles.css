@@ -1,0 +1,10 @@
+.taskGridHeader {
+    font-weight: 700;
+}
+
+
+
+#taskGrid p {
+    margin: 0;
+    padding: 0;
+}
