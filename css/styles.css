@@ -6,8 +6,18 @@
     padding: 0;
 }
 
-nav i {
+.navbar i {
     display: block;
     color: green;
     font-size: 50px;
 }
+
+.navbar a {
+    font-size: 20px;
+}
+
+.navbar a:hover{
+    text-decoration: underline;
+    text-decoration-color:green;
+    text-decoration-thickness: 4px;
+  }
