@@ -77,15 +77,15 @@
                   <fieldset class="form-group col">
                       <legend class="col-form-label">Priority</legend>
                       <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="priority" id="highPriority" value="highPriority" checked>
+                          <input class="form-check-input" type="radio" name="priority" id="taskHighPriority" value="highPriority" checked>
                           <label class="form-check-label" for="inlineRadio1">High</label>
                       </div>
                       <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="priority" id="mediumPriority" value="mediumPriority">
+                          <input class="form-check-input" type="radio" name="priority" id="taskMediumPriority" value="mediumPriority">
                           <label class="form-check-label" for="inlineRadio2">Medium</label>
                       </div>
                       <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="priority" id="lowPriority" value="lowPriority">
+                          <input class="form-check-input" type="radio" name="priority" id="taskLowPriority" value="lowPriority">
                           <label class="form-check-label" for="inlineRadio3">Low</label>
                       </div>
                   </fieldset>
@@ -122,32 +122,7 @@
                 </div>
               </div>
           </form>
-          <div class="row">
-            <div class="col my-4">
-                  
-                    <!-- card 1 -->
-                    <div class="card">
-                      <div class="card-body">
-                        <h5 class="card-title">Task 1</h5> 
-                        <h6 class="card-subtitle mb-2 text-muted">Due Date : 1 December 2020</h6>
-                        <p class="card-text mb-3">Task 1 Description</p>
-                        <p class="card-text mb-3"><strong>Assigned To : Ana</strong></p>
-                        <div class="alert alert-info">Status : To Do</div>
-                        <div class="badge badge-danger mb-4" style="width:100%;">Priority : High</div>
-                        <a href="#"><i class="fas fa-edit fa-lg px-2" style="color:rgb(99, 99, 201);"></i></a>
-                        <a href=""><i class="fas fa-trash-alt fa-lg" style="color: maroon;"></i></a>
-                      </div>
-                    </div>
-            </div>
-
-            <!-- second col -->
-            <div class="col my-4" id="task-card">
-
-                    <!-- second card -->
-
-            </div>
-            <!-- card end -->
-          </div>
+          <div class="row" id="row"></div>
       
       </div>
     </main>

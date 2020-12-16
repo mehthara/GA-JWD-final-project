@@ -1,5 +1,7 @@
-// Initialize a new TaskManager with current ID set to 0
+// Initialize a new instance of TaskManager with current ID set to 0. We are creating a new object taskManager within class TaskManager
+// ????? Why we pass 0 here? We have it as a default value already
 const taskManager = new TaskManager(0);
+
 // Select the Task Form
 const taskForm = document.querySelector('#taskForm');
 
@@ -23,12 +25,25 @@ taskForm.addEventListener('submit', (event) => {
     const dueDate = taskDueDate.value;
     const status = taskStatus.value;
 
+    // Get the checked state of priority checkboxes
+    const highPriority = document.getElementById('taskHighPriority').checked;
+    const mediumPriority = document.getElementById('taskMediumPriority').checked;
+    const lowPriority = document.getElementById('taskLowPriority').checked;
+    // Get the checked priority
+    let priority;
+    if (highPriority) {
+        priority = 'High';
+    } else if (mediumPriority) {
+        priority = 'Medium';
+    } else {
+        priority = 'Low';
+    };
+
     console.log(name);
     console.log(description);
     console.log(dueDate);
     console.log(assignedTo);
     console.log(status);
-    //console.log(priority);
 
     //name validation
     if (!validFormFieldInput(name)) {
@@ -43,7 +58,7 @@ taskForm.addEventListener('submit', (event) => {
         console.log('validating description if block');
 
     //date validation
-}   else if (!validFormFieldInput(dueDate)) {
+    } else if (!validFormFieldInput(dueDate)) {
     errorMessage.innerHTML = 'Please select Due Date';
     errorMessage.style.display = 'block';
     console.log('validating due date if block');
@@ -54,7 +69,7 @@ taskForm.addEventListener('submit', (event) => {
         errorMessage.style.display = 'block';
         console.log('validating assigned to if block');
     
-    //dropdown status validation
+    //status validation
     } else if (!validFormFieldInput(status)) { 
         errorMessage.innerHTML = 'Please select Status';
         errorMessage.style.display = 'block';
@@ -63,14 +78,12 @@ taskForm.addEventListener('submit', (event) => {
     } else {
         errorMessage.style.display = 'none';
         console.log('else block');
-        // Add the new task to the task manager
-        taskManager.addTask(name, description, assignedTo, dueDate);
-        //Clear the form after submitting
-        taskName.value = '';
-        taskDescription.value = '';
-        taskAssignedTo.value = '';
-        taskDueDate.value = '';
-        taskStatus.value = '';
+
+        // Add the new task to the task manager. We are calling the method addTask on the object taskManager
+        taskManager.addTask(name, description, assignedTo, dueDate, priority);
+
+        // Clear the form after submitting
+        event.target.reset();
     };
 });
 
@@ -78,8 +91,7 @@ function validFormFieldInput(data) {
     return data !== null && data !== '';
 }
 
-
-//setting date's min value:
+// Setting date's min value:
 let today = new Date();
 const dd = today.getDate();
 const mm = today.getMonth()+1; //January is 0!
