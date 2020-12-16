@@ -1,3 +1,5 @@
+// Initialize a new TaskManager with current ID set to 0
+const taskManager = new TaskManager(0);
 // Select the Task Form
 const taskForm = document.querySelector('#taskForm');
 
@@ -41,39 +43,46 @@ taskForm.addEventListener('submit', (event) => {
         console.log('validating description if block');
 
     //date validation
-}   else if (dueDate == 0) {
+}   else if (!validFormFieldInput(dueDate)) {
     errorMessage.innerHTML = 'Please select Due Date';
     errorMessage.style.display = 'block';
     console.log('validating due date if block');
 
     //assigned to validation
-    } else if (assignedTo == 0) {
+    } else if (!validFormFieldInput(assignedTo)) {
         errorMessage.innerHTML = 'Please select Assigned to';
         errorMessage.style.display = 'block';
         console.log('validating assigned to if block');
     
     //dropdown status validation
-    } else if (status == 0){ 
+    } else if (!validFormFieldInput(status)) { 
         errorMessage.innerHTML = 'Please select Status';
         errorMessage.style.display = 'block';
         console.log('validating status if block');
     
     } else {
         errorMessage.style.display = 'none';
-        console.log('status else block');
+        console.log('else block');
+        // Add the new task to the task manager
+        taskManager.addTask(name, description, assignedTo, dueDate);
+        //Clear the form after submitting
+        taskName.value = '';
+        taskDescription.value = '';
+        taskAssignedTo.value = '';
+        taskDueDate.value = '';
+        taskStatus.value = '';
     };
-
 });
 
-function validFormFieldInput(data){
+function validFormFieldInput(data) {
     return data !== null && data !== '';
 }
 
 
 //setting date's min value:
-var today = new Date();
-var dd = today.getDate();
-var mm = today.getMonth()+1; //January is 0!
-var yyyy = today.getFullYear();
+let today = new Date();
+const dd = today.getDate();
+const mm = today.getMonth()+1; //January is 0!
+const yyyy = today.getFullYear();
 today = yyyy+'-'+mm+'-'+dd;
-document.getElementById("taskDueDate").setAttribute("min", today);
+taskDueDate.min = today;

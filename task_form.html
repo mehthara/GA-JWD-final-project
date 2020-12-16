@@ -55,7 +55,7 @@
                   <div class="form-group col">
                       <label for="taskAssignedTo">Assigned to</label>
                       <select class="form-control" id="taskAssignedTo">
-                          <option disabled selected value = "0">Select an option</option>
+                          <option disabled selected value = "">Select an option</option>
                           <option>Ana</option>
                           <option>Mehthara</option>
                           <option>Someone else</option>
@@ -67,7 +67,7 @@
                   <div class="form-group col">
                       <label for="taskStatus">Status</label>
                       <select class="form-control" id="taskStatus">
-                          <option disabled selected value = "0">Select an option</option>
+                          <option disabled selected value = "">Select an option</option>
                           <option>TODO</option>
                           <option>IN PROGRESS</option>
                           <option>REVIEW</option>
@@ -122,6 +122,25 @@
                 </div>
               </div>
           </form>
+          <div class="row">
+            <div class="col-lg-4 col-md-6 my-4">
+                  
+                    <!-- card 1 -->
+                    <div class="list-group-item card">
+                      <div class="card-body">
+                        <h5 class="card-title">Task 1</h5> 
+                        <h6 class="card-subtitle mb-2 text-muted">Due Date : 1 December 2020</h6>
+                        <p class="card-text mb-3">Task 1 Description</p>
+                        <p class="card-text mb-3"><strong>Assigned To : Ana</strong></p>
+                        <div class="alert alert-info">Status : To Do</div>
+                        <div class="badge badge-danger mb-4" style="width:100%;">Priority : High</div>
+                        <a href="#"><i class="fas fa-edit fa-lg px-2" style="color:rgb(99, 99, 201);"></i></a>
+                        <a href=""><i class="fas fa-trash-alt fa-lg" style="color: maroon;"></i></a>
+                      </div>
+                    </div>
+            </div>
+          </div>
+      
       </div>
     </main>
     
@@ -131,6 +150,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 
     <!--JS-->
+    <script src="js/taskManager.js"></script>
     <script src="js/index.js"></script>
   </body>
 </html>
