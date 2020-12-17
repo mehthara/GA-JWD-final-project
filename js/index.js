@@ -1,5 +1,5 @@
 // Initialize a new instance of TaskManager with current ID set to 0. We are creating a new object taskManager within class TaskManager
-// ????? Why we pass 0 here? We have it as a default value already
+
 const taskManager = new TaskManager(0);
 
 // Select the Task Form
@@ -89,7 +89,36 @@ taskForm.addEventListener('submit', (event) => {
 
 function validFormFieldInput(data) {
     return data !== null && data !== '';
-}
+};
+
+const taskList = document.querySelector('#taskList');
+
+taskList.addEventListener('click', (event) => {
+
+  if(event.target.classList.contains('done-button')){
+
+    const button = event.target;
+    const parentTask = button.parentElement.parentElement;
+
+    // Garantee the return of the id as a number
+    const parentTaskId = Number(parentTask.id);
+    
+    // Find the task id that matches the parent id
+    const task = taskManager.tasks.find(task => task.id === parentTaskId);
+
+    // Change the task status
+    task.status = 'DONE';
+
+    // If statement to garantee the changes on the UI matches the array of tasks
+    if(task.status === 'DONE') {
+      const alert = parentTask.getElementsByClassName('alert');
+        alert[0].classList.remove('alert-info');
+        alert[0].classList.add('alert-success');
+        alert[0].innerHTML = `DONE`;
+        button.remove();
+    };
+  };
+});
 
 // Setting date's min value:
 let today = new Date();
