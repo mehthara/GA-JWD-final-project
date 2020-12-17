@@ -30,7 +30,16 @@ class TaskManager {
         // Create a new element <div> (column = card) in the HTML file and give it a class
         const card = document.createElement('div');
         card.className ='col-lg-4 col-md-6 my-4';
-        //create HTML card to display the new task added
+        // Get the bootstrap class name for styling priority
+        let badge;
+        if (newTask.priority === 'High') {
+            badge = 'badge-danger';
+        } else if (newTask.priority === 'Medium') {
+            badge = 'badge-primary';
+        } else {
+            badge = 'badge-secondary';
+        };
+        // Create HTML card to display the new task added
         card.innerHTML = `
                     <div class="list-group-item card" id=${newTask.id}>
                     <div class="card-body">
@@ -39,7 +48,7 @@ class TaskManager {
                         <p class="card-text mb-3">${newTask.description}</p>
                         <p class="card-text mb-3"><strong>Assigned To: ${newTask.assignedTo}</strong></p>
                         <div class="alert alert-info">Status: ${newTask.status}</div>
-                        <div class="badge badge-danger mb-4" style="width:100%;">Priority: ${newTask.priority}</div>
+                        <div class="badge ${badge} mb-4" style="width:100%;">Priority: ${newTask.priority}</div>
                         <a href="#"><i class="fas fa-edit fa-lg px-2" style="color:rgb(99, 99, 201);"></i></a>
                         <a href=""><i class="fas fa-trash-alt fa-lg" style="color: maroon;"></i></a>
                         <button class="btn btn-outline-success done-button ml-5">Mark As Done</button>
