@@ -8,7 +8,7 @@ class TaskManager {
     // Method accepts all info from the form (to create a task - object) as parameters
     addTask(name, description, assignedTo, dueDate, priority) {
         const newTask = {
-            id: this.currentId++,
+            id: ++this.currentId,
             name: name,
             description: description,
             assignedTo: assignedTo,
@@ -19,76 +19,78 @@ class TaskManager {
         // Push a new task into the array
         this.tasks.push(newTask);
         console.log(this.tasks);
-    
-        /* Display cards */
-        // Get date to standard format
-        const dueByDate = new Date(newTask.dueDate);
-        // Format date to be dd/mm/yyyy
-        const formattedDate = dueByDate.getDate() + '/' + (dueByDate.getMonth() + 1) + '/' + dueByDate.getFullYear();
+    }
+
+    display() {
+        console.log(this.tasks);
         // Select the row that contains all cards from the HTML file and assign it to a variable
         const taskList = document.querySelector('#taskList');
+        taskList.innerHTML = '';
+        for (let i = 0; i < this.tasks.length; i++) {
+            const task = this.tasks[i];
+        /* Display cards */
+        // Get date to standard format
+        const dueByDate = new Date(task.dueDate);
+        // Format date to be dd/mm/yyyy
+        const formattedDate = dueByDate.getDate() + '/' + (dueByDate.getMonth() + 1) + '/' + dueByDate.getFullYear();
         // Create a new element <div> (column = card) in the HTML file and give it a class
         const card = document.createElement('div');
         card.className ='col-lg-4 col-md-6 my-4';
         // Get the bootstrap class name for styling priority
         let badge;
-        if (newTask.priority === 'High') {
+        if (task.priority === 'High') {
             badge = 'badge-danger';
-        } else if (newTask.priority === 'Medium') {
+        } else if (task.priority === 'Medium') {
             badge = 'badge-primary';
         } else {
             badge = 'badge-secondary';
         };
         // Create HTML card to display the new task added
         card.innerHTML = `
-                    <div class="list-group-item card" id=${newTask.id}>
+                    <div class="list-group-item card" id=${task.id}>
                     <div class="card-body">
-                        <h5 class="card-title">${newTask.name}</h5> 
+                        <h5 class="card-title">${task.name}</h5> 
                         <h6 class="card-subtitle mb-2 text-muted">Due Date: ${formattedDate}</h6>
-                        <p class="card-text mb-3">${newTask.description}</p>
-                        <p class="card-text mb-3"><strong>Assigned To: ${newTask.assignedTo}</strong></p>
-                        <div class="alert alert-info">Status: ${newTask.status}</div>
-                        <div class="badge ${badge} mb-4" style="width:100%;">Priority: ${newTask.priority}</div>
+                        <p class="card-text mb-3">${task.description}</p>
+                        <p class="card-text mb-3"><strong>Assigned To: ${task.assignedTo}</strong></p>
+                        <div class="alert ${task.status === 'TODO' ? 'alert-info' : 'alert-success'}">Status: ${task.status}</div>
+                        <div class="badge ${badge} mb-4" style="width:100%;">Priority: ${task.priority}</div>
                         <a href="#"><i class="fas fa-edit fa-lg px-2" style="color:rgb(99, 99, 201);"></i></a>
-                        <a href="#" class="delete-button"><i class="fas fa-trash-alt fa-lg" style="color: maroon;"></i></a>
-                        <button class="btn btn-outline-success done-button ml-5">Mark As Done</button>
+                        <a href="#"><i class="fas fa-trash-alt fa-lg delete-button" style="color: maroon;"></i></a>
+                        <button class="btn btn-outline-success done-button ml-5 ${task.status === 'TODO' ? 'visible' : 'invisible'}">Mark As Done</button>
                     </div>
             </div>
         `;
         //Append new HTML card to the row that contains all cards   
         taskList.appendChild(card);
-    }    
+        };
+    }
 
-        //saving to local storage
-        save() {
-            // Create a JSON string of the tasks
-            const tasksJson = JSON.stringify(this.tasks);
-    
-            // Store the JSON string in localStorage
-            localStorage.setItem('tasks', tasksJson);
-    
-            // Convert the currentId to a string;
-            const currentId = String(this.currentId);
-    
-            // Store the currentId in localStorage
-            localStorage.setItem('currentId', currentId);
+    // Saving to local storage
+    save() {
+        // Create a JSON string of the tasks
+        const tasksJson = JSON.stringify(this.tasks);
+
+        // Store the JSON string in localStorage
+        localStorage.setItem('tasks', tasksJson);
+
+        // Convert the currentId to a string;
+        const currentId = String(this.currentId);
+
+        // Store the currentId in localStorage
+        localStorage.setItem('currentId', currentId);
+    }
+
+    // Loading from local storage
+    load() {
+        // Check if any tasks are saved in localStorage
+        if (localStorage.getItem('tasks')) {
+            // Get the JSON string of tasks in localStorage
+            const tasksJson = localStorage.getItem('tasks');
+
+            // Convert it to an array and store it in our TaskManager
+            this.tasks = JSON.parse(tasksJson);
         }
-
-        //load from local storage
-        load() {
-            // Check if any tasks are saved in localStorage
-            if (localStorage.getItem('tasks')) {
-                // Get the JSON string of tasks in localStorage
-                const tasksJson = localStorage.getItem('tasks');
-    
-                // Convert it to an array and store it in our TaskManager
-                this.tasks = JSON.parse(tasksJson);
-
-                this.tasks.map(eachTask =>{
-                    const {name,description,assignedTo,dueDate,status,priority} =eachTask;
-                    this.addTask(name,description,assignedTo,dueDate,status,priority);       
-                })
-            }
     
             // Check if the currentId is saved in localStorage
             if (localStorage.getItem('currentId')) {
@@ -100,25 +102,8 @@ class TaskManager {
             }
         }
 
-        // Create the deleteTask method
-        deleteTask(taskId) {
-        // Create an empty array and store it in a new variable, newTasks
-        const newTasks = [];
-
-        // Loop over the tasks
-        for (let i = 0; i < this.tasks.length; i++) {
-            // Get the current task in the loop
-            const task = this.tasks[i];
-
-            // Check if the task id is not the task id passed in as a parameter
-            if (task.id !== taskId) {
-                // Push the task to the newTasks array
-                newTasks.push(task);
-            }
-        }
-
-            // Set this.tasks to newTasks
-            this.tasks = newTasks;
-        }
-    
-}
+    // Deleting a task
+    deleteTask(taskId) {
+        this.tasks = this.tasks.filter(item => item.id != taskId)
+    }
+};
