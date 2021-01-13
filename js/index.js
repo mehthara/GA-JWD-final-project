@@ -3,8 +3,11 @@
 const taskManager = new TaskManager(0);
 
 
-//loading task from local storage
+// Loading task from local storage
 taskManager.load();
+
+// Displaying tasks in task list
+taskManager.display();
 
 // Select the Task Form
 const taskForm = document.querySelector('#taskForm');
@@ -86,8 +89,11 @@ taskForm.addEventListener('submit', (event) => {
         // Add the new task to the task manager. We are calling the method addTask on the object taskManager
         taskManager.addTask(name, description, assignedTo, dueDate, priority);
 
-        //save to local storage
+        // Save to local storage
         taskManager.save();
+
+        // Display in task list
+        taskManager.display();
 
         // Clear the form after submitting
         event.target.reset();
@@ -101,38 +107,32 @@ function validFormFieldInput(data) {
 const taskList = document.querySelector('#taskList');
 
 taskList.addEventListener('click', (event) => {
+  // If DONE button was clicked - changing status to DONE  
+  if(event.target.classList.contains('done-button')){
 
-//   if(event.target.classList.contains('done-button')){
+    const button = event.target;
+    const parentTask = button.parentElement.parentElement;
 
-//     const button = event.target;
-//     const parentTask = button.parentElement.parentElement;
-
-//     // Garantee the return of the id as a number
-//     const parentTaskId = Number(parentTask.id);
+    // Garantee the return of the id as a number
+    const parentTaskId = Number(parentTask.id);
     
-//     // Find the task id that matches the parent id
-//     const task = taskManager.tasks.find(task => task.id === parentTaskId);
+    // Find the task id that matches the parent id
+    const task = taskManager.tasks.find(task => task.id === parentTaskId);
 
-//     // Change the task status
-//     task.status = 'DONE';
+    // Change the task status
+    task.status = 'DONE';
 
-//     //save task to local storage
-//     taskManager.save();
+    // Save task to local storage
+    taskManager.save();
 
-//     // If statement to garantee the changes on the UI matches the array of tasks
-//     if(task.status === 'DONE') {
-//       const alert = parentTask.getElementsByClassName('alert');
-//         alert[0].classList.remove('alert-info');
-//         alert[0].classList.add('alert-success');
-//         alert[0].innerHTML = `DONE`;
-//         button.remove();
-//     };
-//   };
+    // Display in task list
+    taskManager.display();
+  };
 
-  //check if delete button was clicked
+  // If delete button was clicked - delete task
   if (event.target.classList.contains('delete-button')) {
     // Get the parent Task
-    const parentTask = event.target.parentElement.parentElement;
+    const parentTask = event.target.parentElement.parentElement.parentElement;
     console.log(parentTask);
     // Get the taskId of the parent Task.
     const taskId = Number(parentTask.id);
@@ -140,16 +140,13 @@ taskList.addEventListener('click', (event) => {
     // Delete the task
     taskManager.deleteTask(taskId);
 
-    // Save the tasks to localStorage
+    // Save tasks to localStorage
     taskManager.save();
 
-    // Render the tasks
-    taskManager.load();
-}
-
+    // Display tasks in task list
+    taskManager.display();
+};
 });
-
-
 
 // Setting date's min value:
 let today = new Date();
@@ -158,3 +155,4 @@ const mm = today.getMonth()+1; //January is 0!
 const yyyy = today.getFullYear();
 today = yyyy+'-'+mm+'-'+dd;
 taskDueDate.min = today;
+console.log(taskDueDate);
