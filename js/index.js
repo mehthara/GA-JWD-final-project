@@ -2,6 +2,10 @@
 
 const taskManager = new TaskManager(0);
 
+
+//loading task from local storage
+taskManager.load();
+
 // Select the Task Form
 const taskForm = document.querySelector('#taskForm');
 
@@ -82,6 +86,9 @@ taskForm.addEventListener('submit', (event) => {
         // Add the new task to the task manager. We are calling the method addTask on the object taskManager
         taskManager.addTask(name, description, assignedTo, dueDate, priority);
 
+        //save to local storage
+        taskManager.save();
+
         // Clear the form after submitting
         event.target.reset();
     };
@@ -95,30 +102,54 @@ const taskList = document.querySelector('#taskList');
 
 taskList.addEventListener('click', (event) => {
 
-  if(event.target.classList.contains('done-button')){
+//   if(event.target.classList.contains('done-button')){
 
-    const button = event.target;
-    const parentTask = button.parentElement.parentElement;
+//     const button = event.target;
+//     const parentTask = button.parentElement.parentElement;
 
-    // Garantee the return of the id as a number
-    const parentTaskId = Number(parentTask.id);
+//     // Garantee the return of the id as a number
+//     const parentTaskId = Number(parentTask.id);
     
-    // Find the task id that matches the parent id
-    const task = taskManager.tasks.find(task => task.id === parentTaskId);
+//     // Find the task id that matches the parent id
+//     const task = taskManager.tasks.find(task => task.id === parentTaskId);
 
-    // Change the task status
-    task.status = 'DONE';
+//     // Change the task status
+//     task.status = 'DONE';
 
-    // If statement to garantee the changes on the UI matches the array of tasks
-    if(task.status === 'DONE') {
-      const alert = parentTask.getElementsByClassName('alert');
-        alert[0].classList.remove('alert-info');
-        alert[0].classList.add('alert-success');
-        alert[0].innerHTML = `DONE`;
-        button.remove();
-    };
-  };
+//     //save task to local storage
+//     taskManager.save();
+
+//     // If statement to garantee the changes on the UI matches the array of tasks
+//     if(task.status === 'DONE') {
+//       const alert = parentTask.getElementsByClassName('alert');
+//         alert[0].classList.remove('alert-info');
+//         alert[0].classList.add('alert-success');
+//         alert[0].innerHTML = `DONE`;
+//         button.remove();
+//     };
+//   };
+
+  //check if delete button was clicked
+  if (event.target.classList.contains('delete-button')) {
+    // Get the parent Task
+    const parentTask = event.target.parentElement.parentElement;
+    console.log(parentTask);
+    // Get the taskId of the parent Task.
+    const taskId = Number(parentTask.id);
+    console.log(taskId);
+    // Delete the task
+    taskManager.deleteTask(taskId);
+
+    // Save the tasks to localStorage
+    taskManager.save();
+
+    // Render the tasks
+    taskManager.load();
+}
+
 });
+
+
 
 // Setting date's min value:
 let today = new Date();
