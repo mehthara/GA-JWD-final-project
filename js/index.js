@@ -117,8 +117,8 @@ taskList.addEventListener('click', (event) => {
     const parentTaskId = Number(parentTask.id);
     
     // Find the task id that matches the parent id
-    const task = taskManager.tasks.find(task => task.id === parentTaskId);
-
+    //const task = taskManager.tasks.find(task => task.id === parentTaskId);
+   const task = taskManager.getTasksById(parentTaskId);
     // Change the task status
     task.status = 'DONE';
 

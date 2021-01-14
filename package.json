@@ -1,0 +1,25 @@
+{
+  "name": "ga-jwd-final-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hi-i-am-ana/GA-JWD-final-project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hi-i-am-ana/GA-JWD-final-project/issues"
+  },
+  "homepage": "https://github.com/hi-i-am-ana/GA-JWD-final-project#readme",
+  "devDependencies": {
+    "mocha": "^8.2.1"
+  }
+}

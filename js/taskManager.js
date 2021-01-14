@@ -106,4 +106,12 @@ class TaskManager {
     deleteTask(taskId) {
         this.tasks = this.tasks.filter(item => item.id != taskId)
     }
+
+    getTasksById(taskId){
+        return this.tasks.find(task => task.id === taskId);
+        
+    }
 };
+
+
+module.exports = TaskManager;
