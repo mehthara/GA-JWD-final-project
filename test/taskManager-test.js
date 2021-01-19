@@ -36,7 +36,7 @@ describe("TaskManager", () => {
       assert.ok(len > taskManager.tasks.length);
     });
   });
-  describe(".getTasksById", () =>{
+  describe(".getTaskById", () =>{
     it("get task by Id", () => {
       //setup
       const taskManager = new TaskManager(0);
@@ -50,7 +50,7 @@ describe("TaskManager", () => {
       
       const inputTaskId = Number(taskManager.currentId);
       //exercise
-      const task = taskManager.getTasksById(inputTaskId);
+      const task = taskManager.getTaskById(inputTaskId);
         
       //verify
       assert.strictEqual(task.id,inputTaskId);

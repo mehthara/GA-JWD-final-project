@@ -4,155 +4,142 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Task Lists</title>
+
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 
   <!-- Fontawesome -->
   <script src="https://kit.fontawesome.com/0c3a972dba.js" crossorigin="anonymous"></script>
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="css/styles.css">
-
 </head>
 <body>
   <header>
     <!-- navbar -->
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
-        <a class="navbar-brand" href="#"><i class="fas fa-list-alt"></i></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <div class="navbar-nav ml-auto mr-5">
-            <a class="nav-link px-4 active" href="index.html">Task List</a>
-            <a class="nav-link px-4" href="task_form.html">New Task</a>
-          </div>
-        </div>
+      <nav class="navbar navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand"><i class="fas fa-list-alt" style="display:block;color: green;font-size:40px"></i></a>
+        <p id="greetMe" style="color:white; " class="pt-2 m-auto h5"></p>
       </nav>
   </header>
     
   <main>
-      <section id="tasksList">
-         <div class="container py-4"> 
-            <h3 class="display-4 py-4">Task List</h3>
-            <a href="task_form.html" type="button" class="btn btn-primary border"><h6><i class="fas fa-plus"></i>&ThinSpace;Add new task</h6></a>
-            <!-- List groups -->
-            <div class="list-group">
-                <div class="row">
-                      <div class="col-lg-4 col-md-6 my-4">
-                            
-                              <!-- card 1 -->
-                              <div class="list-group-item card">
-                                <div class="card-body">
-                                  <h5 class="card-title">Task 1</h5> 
-                                  <h6 class="card-subtitle mb-2 text-muted">Due Date : 1 December 2020</h6>
-                                  <p class="card-text mb-3">Task 1 Description</p>
-                                  <p class="card-text mb-3"><strong>Assigned To : Ana</strong></p>
-                                  <div class="alert alert-info">Status : To Do</div>
-                                  <div class="badge badge-danger mb-4" style="width:100%;">Priority : High</div>
-                                  <a href="#"><i class="fas fa-edit fa-lg px-2" style="color:rgb(99, 99, 201);"></i></a>
-                                  <a href=""><i class="fas fa-trash-alt fa-lg" style="color: maroon;"></i></a>
-                                </div>
-                              </div>
-                      </div>
-                      <div class="col-lg-4 col-md-6 my-4">
-                              
-                               <!-- card 2 -->
-                               <div class="list-group-item card">
-                                <div class="card-body">
-                                  <h5 class="card-title">Task 2</h5>
-                                  <h6 class="card-subtitle mb-2 text-muted">Due Date : 12 December 2020</h6>
-                                  <p class="card-text mb-3">Task 2 Description</p>
-                                  <p class="card-text mb-3"><strong>Assigned To : Mehthara</strong></p>
-                                  <div class="alert alert-warning">Status : Review</div>
-                                  <div class="badge badge-primary mb-4" style="width:100%;">Priority : Medium</div>
-                                  <a href=""><i class="fas fa-edit fa-lg px-2" style="color:rgb(99, 99, 201);"></i></a>
-                                  <a href=""><i class="fas fa-trash-alt fa-lg" style="color: maroon;"></i></a>
-                                </div>
-                              </div>  
-                              
-                      </div>
-                      <div class="col-lg-4 col-md-6 my-4">
-                              
-                         <!-- card 3 -->
-                         <div class="list-group-item card">
-                          <div class="card-body">
-                            <h5 class="card-title">Task 3</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">Due Date : 5 December 2020</h6>
-                            <p class="card-text mb-3">Task 3 Description</p>
-                            <p class="card-text mb-3"><strong>Assigned To : Peter</strong></p>
-                            <div class="alert alert-primary">Status : In Progress</div>
-                            <div class="badge badge-secondary mb-4" style="width:100%;">Priority : Low</div>
-                            <a href=""><i class="fas fa-edit fa-lg px-2" style="color:rgb(99, 99, 201);"></i></a>
-                            <a href=""><i class="fas fa-trash-alt fa-lg" style="color: maroon;"></i></a>
-                          </div>
+    <!-- Task list -->
+    <div class="container-fluid mt-5 pt-3">
+      <div class="row mx-3">
+        <h3 class="display-4 pt-4">Task List</h3>
+        <button type="button" class="btn btn-success shadow my-5 ml-auto mr-3" style="background-color:green" data-toggle="modal" data-target="#taskModal"><i class="fas fa-plus"></i>&ThinSpace;Add new task</button>
+        <button type="button" class="btn btn-danger shadow my-5" id="clearStorageBtn">Clear task list</button>
+      </div>
+      <!-- Div for displaying tasks from JS -->
+      <div class="row mx-3" id="taskList">
+        <div class="col mr-3" id="todoTasks"></div>
+        <div class="col mr-3" id="inprogressTasks"></div>
+        <div class="col mr-3" id="reviewTasks"></div>
+        <div class="col" id="doneTasks"></div>
+      </div>
+    </div>
+    <!-- End task list -->
+
+    <!-- Modal -->
+    <div class="modal" id="taskModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title">New Task</h3>
+            <button type="button" class="close" data-dismiss="modal">
+              <span id="close">&times;</span>
+            </button>
+          </div>
+
+          <div class="container modal-body">
+      
+            <form id="taskForm">
+                <div class="form-group">
+                    <label for="taskName">Task Name</label>
+                    <input type="text" class="form-control" id="taskName" placeholder="Add Task Name...">
+                    <div id="alertTaskName" style="display: none; color: red; font-size: 13px;">
+                      Please enter a task name
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="taskDescription">Task Description</label>
+                    <textarea class="form-control" id="taskDescription" rows="3" placeholder="Add Task Description..."></textarea>
+                    <div id="alertTaskDescription" style="display: none; color: red; font-size: 13px;">
+                      Please enter a task description
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="taskDueDate">Due Date</label>
+                        <input type="date" class="form-control" id="taskDueDate">
+                        <div id="alertTaskDueDate" style="display: none; color: red; font-size: 13px;">
+                          Please select a task due date
                         </div>
-                                
-                              
-                      </div><!-- col 3 close -->
-                     
-                      <div class="col-lg-4 col-md-6 my-4">
-                            
-                              <!-- card 4 -->
-                              <div class="list-group-item card">
-                                <div class="card-body">
-                                  <h5 class="card-title">Task 4</h5>
-                                  <h6 class="card-subtitle mb-2 text-muted">Due Date : 1 December 2020</h6>
-                                  <p class="card-text mb-3">Task 4 Description</p>
-                                  <p class="card-text mb-3"><strong>Assigned To : Ana</strong></p>
-                                  <div class="alert alert-primary">Status : In Progress</div>
-                                  <div class="badge badge-danger mb-4" style="width:100%;">Priority : High</div>
-                                  <a href="#"><i class="fas fa-edit fa-lg px-2" style="color:rgb(99, 99, 201);"></i></a>
-                                  <a href="#"><i class="fas fa-trash-alt fa-lg" style="color: maroon;"></i></a>
-                                </div>
-                              </div>
-                            
-                      </div>
-                      <div class="col-lg-4 col-md-6 my-4">
-                              
-                              <!-- card 4 -->
-                              <div class="list-group-item card">
-                                <div class="card-body">
-                                  <h5 class="card-title">Task 5</h5>
-                                  <h6 class="card-subtitle mb-2 text-muted">Due Date : 12 December 2020</h6>
-                                  <p class="card-text mb-3">Task 5 Description</p>
-                                  <p class="card-text mb-3"><strong>Assigned To : Mehthara</strong></p>
-                                  <div class="alert alert-info">Status : To Do</div>
-                                  <div class="badge badge-secondary mb-4" style="width:100%;">Priority : Low</div>
-                                  <a href="#"><i class="fas fa-edit fa-lg px-2" style="color:rgb(99, 99, 201);"></i></a>
-                                  <a href="#"><i class="fas fa-trash-alt fa-lg" style="color: maroon;"></i></a>
-                                </div>
-                              </div>  
-                              
-                      </div>
-                      <div class="col-lg-4 col-md-6 my-4">
-                              
-                        <!-- card 6 -->
-                        <div class="list-group-item card">
-                          <div class="card-body">
-                            <h5 class="card-title">Task 6</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">Due Date : 5 December 2020</h6>
-                            <p class="card-text mb-3">Task 6 Description</p>
-                            <p class="card-text mb-3"><strong>Assigned To : James</strong></p>
-                            <div class="alert alert-success">Status : Done</div>
-                            <div class="badge badge-primary mb-4" style="width:100%;">Priority : Medium</div>
-                            <a href="#"><i class="fas fa-edit fa-lg px-2" style="color:rgb(99, 99, 201);"></i></a>    
-                            <a href="#"><i class="fas fa-trash-alt fa-lg" style="color: maroon;"></i></a>    
-                            </div>
-                          </div>
-                                
-                              
-                      </div> <!-- col 6 close -->
-              </div> <!--row   -->
-            </div><!-- list-group close  -->
-          </div> <!-- container close    -->
-      </section>
+                    </div>
+                    <div class="form-group col">
+                        <label for="taskAssignedTo">Assigned to</label>
+                        <select class="form-control" id="taskAssignedTo">
+                            <option disabled selected value = "">Select an option</option>
+                            <option>Ana</option>
+                            <option>Mehthara</option>
+                            <option>Stranger</option>
+                        </select>
+                        <div id="alertTaskAssignedTo" style="display: none; color: red; font-size: 13px;">
+                          Please select a task assignee
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="taskStatus">Status</label>
+                        <select class="form-control" id="taskStatus">
+                            <option selected>TODO</option>
+                            <option>IN PROGRESS</option>
+                            <option>REVIEW</option>
+                            <option>DONE</option>
+                        </select>
+                    </div>
+                    <fieldset class="form-group col">
+                        <legend class="col-form-label">Priority</legend>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="priority" id="taskHighPriority" value="highPriority" checked>
+                            <label class="form-check-label" for="inlineRadio1">High</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="priority" id="taskMediumPriority" value="mediumPriority">
+                            <label class="form-check-label" for="inlineRadio2">Medium</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="priority" id="taskLowPriority" value="lowPriority">
+                            <label class="form-check-label" for="inlineRadio3">Low</label>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success shadow">Save</button>
+                  <button type="button" id="cancel-btn" class="btn btn-secondary shadow mx-3" data-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-danger shadow">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End modal -->
   </main>
 
+  <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 
-    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-  
+  <!--JS-->
+  <script src="js/taskManager.js"></script>
+  <script src="js/index.js"></script>    
 </body>
 </html>
