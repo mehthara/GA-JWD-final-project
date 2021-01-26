@@ -1,11 +1,11 @@
 class TaskManager {
     constructor(currentId = 0) {
-        // An empty array to save all tasks added (each task - an object - an element of the array) 
+        // An empty array to save all tasks added (each task - object - element of the array) 
         this.tasks = [];
         this.currentId = currentId;
     }
 
-    // Add task method accepts all info from the form as arguments, creates a task (object) and adds it to an array of tasks
+    // Add task method accepts all info from task form fields as arguments, creates a task (object) and adds it to array of tasks
     addTask(name, description, assignedTo, dueDate, status, priority) {
         const newTask = {
             id: ++this.currentId,
@@ -20,11 +20,21 @@ class TaskManager {
         this.tasks.push(newTask);
         console.log(this.tasks);
     }
+
+    // Edit task method accepts task (object) which should be edited and all info from task form fields as arguments and assigns new values to task object properties
+    editTask(editedTask, name, description, assignedTo, dueDate, status, priority) {
+        editedTask.name = name;
+        editedTask.description = description;
+        editedTask.assignedTo = assignedTo;
+        editedTask.dueDate = dueDate;
+        editedTask.status = status;
+        editedTask.priority = priority;
+    }
     
     // Display method displays tasks from array of tasks. Tasks are displayed in columns according to their status
     display() {
         console.log(this.tasks);
-        // Select columns that contains cards with corresponding status from the HTML and assign them to a variables
+        // Select columns that contains cards with corresponding status from the HTML and assign them to variables
         const todoTasks = document.querySelector('#todoTasks');
         const inprogressTasks = document.querySelector('#inprogressTasks');
         const reviewTasks = document.querySelector('#reviewTasks');
@@ -36,7 +46,7 @@ class TaskManager {
         reviewTasks.innerHTML = '<h5>REVIEW</h5>';
         doneTasks.innerHTML = '<h5>DONE</h5>';
 
-        // Create each card in an array of tasks 
+        // Create each card in array of tasks 
         for (let i = 0; i < this.tasks.length; i++) {
             const task = this.tasks[i];
             // Get date to standard format
@@ -52,34 +62,47 @@ class TaskManager {
                 badge = 'badge-danger';
             } else if (task.priority === 'Medium') {
                 badge = 'badge-primary';
-            } else {
+            } else if (task.priority === 'Low') {
                 badge = 'badge-secondary';
             };
             // HTML for card
             card.innerHTML = `
-                    <div class="list-group-item card" id=${task.id}>
+                    <div class="card" id=${task.id}>
                     <div class="card-body">
                         <h5 class="card-title">${task.name}</h5> 
-                        <h6 class="card-subtitle mb-2 text-muted">Due Date: ${formattedDate}</h6>
+                        <h6 class="card-subtitle mb-2 text-muted">Due date: ${formattedDate}</h6>
                         <p class="card-text mb-3">${task.description}</p>
-                        <p class="card-text mb-3"><strong>Assigned To: ${task.assignedTo}</strong></p>
+                        <p class="card-text mb-3"><strong>Assigned to: ${task.assignedTo}</strong></p>
                         <div class="alert ${task.status === 'DONE' ? 'alert-success' : (task.status === 'IN PROGRESS' ? 'alert-info' : (task.status === 'REVIEW' ? 'alert-warning' : 'alert-primary'))}">Status: ${task.status}</div>
-                        <div class="badge ${badge} mb-4" style="width:100%;">Priority: ${task.priority}</div>
-                        <a href="#"><i class="fas fa-edit fa-lg px-2" style="color:rgb(99, 99, 201);"></i></a>
-                        <a href="#"><i class="fas fa-trash-alt fa-lg delete-button" style="color: maroon;"></i></a>
-                        <button class="btn btn-outline-success done-button ml-5 ${task.status === 'DONE' ? 'invisible' : 'visible'}">Mark As Done</button>
+                        <div class="badge ${badge} mb-4" style="width:100%">Priority: ${task.priority}</div>
+                        <div class="btn-group btn-group-toggle mb-3" style="width:100%" data-toggle="buttons" id="statusChange">
+                            <label class="btn btn-outline-primary" style="font-size: 10px">
+                            <input type="radio" name="options" id="radioToDo">TODO
+                            </label>
+                            <label class="btn btn-outline-info" style="font-size: 10px">
+                            <input type="radio" name="options" id="radioInProgress">IN PROGRESS
+                            </label>
+                            <label class="btn btn-outline-warning" style="font-size: 10px">
+                            <input type="radio" name="options" id="radioReview">REVIEW
+                            </label>
+                            <label class="btn btn-outline-success" style="font-size: 10px">
+                            <input type="radio" name="options" id="radioDone">DONE
+                            </label>
+                        </div>
+                        <a href="#"><i class="fas fa-edit fa-lg px-2" id="editTaskBtn" style="color:rgb(99, 99, 201)" data-toggle="modal" data-target="#taskModal"></i></a>
+                        <a href="#"><i class="fas fa-trash-alt fa-lg" id="deleteTaskBtn" style="color:#dc3545" data-toggle="modal" data-target="#deleteModal"></i></a>
                     </div>
                     </div>
             `;
             // Append HTML card to the corresponding row depending on task status
-            if (task.status === 'DONE') {  
-                doneTasks.appendChild(card);
+            if (task.status === 'TODO') {  
+                todoTasks.appendChild(card);
             } else if (task.status === 'IN PROGRESS') {
                 inprogressTasks.appendChild(card);
             } else if (task.status === 'REVIEW') {
                 reviewTasks.appendChild(card);
-            } else {  
-                todoTasks.appendChild(card);
+            } else if (task.status === 'DONE') {  
+                doneTasks.appendChild(card);
             };
         };
     }
