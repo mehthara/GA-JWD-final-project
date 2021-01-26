@@ -7,17 +7,32 @@ taskManager.load();
 // Display tasks in task list
 taskManager.display();
 
+// Select 'Clear task list' button
+const clearStorageModalBtn = document.getElementById('clearStorageModalBtn');
+
+// Select 'Add new task' button
+const newTaskBtn = document.getElementById('newTaskBtn');
+
 // Select task list
 const taskList = document.querySelector('#taskList');
 
-// Select Clear task list button
-const clearStorageBtn = document.getElementById('clearStorageBtn');
+// Select 'Delete' button in delete modal window
+const deleteModalBtn = document.getElementById('deleteModalBtn');
 
-// Select modal window
+// Select task modal window
 const taskModal = document.getElementById('taskModal');
+
+// Select task modal window title
+const taskModalTitle = document.getElementById('taskModalTitle');
 
 // Select the task form
 const taskForm = document.querySelector('#taskForm');
+
+// Create variable to store task form state - 'add' or 'edit'
+let taskFormState;
+
+// 
+let editedTask;
 
 // Select the inputs
 const taskName = document.querySelector('#taskName');
@@ -25,6 +40,9 @@ const taskDescription = document.querySelector('#taskDescription');
 const taskAssignedTo = document.querySelector('#taskAssignedTo');
 const taskDueDate = document.querySelector('#taskDueDate');
 const taskStatus = document.querySelector('#taskStatus');
+const taskHighPriority = document.querySelector('#taskHighPriority');
+const taskMediumPriority = document.querySelector('#taskMediumPriority');
+const taskLowPriority = document.querySelector('#taskLowPriority');
 
 // Select validation alerts
 const alertTaskName = document.querySelector('#alertTaskName');
@@ -48,16 +66,16 @@ taskForm.addEventListener('submit', (event) => {
     const status = taskStatus.value;
 
     // Get the checked state of priority checkboxes
-    const highPriority = document.getElementById('taskHighPriority').checked;
-    const mediumPriority = document.getElementById('taskMediumPriority').checked;
-    const lowPriority = document.getElementById('taskLowPriority').checked;
+    const highPriority = taskHighPriority.checked;
+    const mediumPriority = taskMediumPriority.checked;
+    const lowPriority = taskLowPriority.checked;
     // Get the checked priority
     let priority;
     if (highPriority) {
         priority = 'High';
     } else if (mediumPriority) {
         priority = 'Medium';
-    } else {
+    } else if (lowPriority) {
         priority = 'Low';
     };
 
@@ -85,10 +103,17 @@ taskForm.addEventListener('submit', (event) => {
         taskAssignedTo.style.borderColor = 'red';
     };
     
-    // If all fields are filled, add task to array of tasks, save array to local storage, display from array in task list
+    // If all fields are filled, add or edit task in array of tasks, save array to local storage, display from array in task list
     if (validFormFieldInput(name) & validFormFieldInput(description) & validFormFieldInput(dueDate) & validFormFieldInput(assignedTo)) {
-        // Add the new task to the task manager. We are calling the method addTask on the object taskManager
-        taskManager.addTask(name, description, assignedTo, dueDate, status, priority);
+        // Add new task to array of tasks if task form state is 'add'
+        if (taskFormState === 'add') {
+            taskManager.addTask(name, description, assignedTo, dueDate, status, priority);
+        };
+        // Edit task in array of tasks if task form state is 'edit'
+        if (taskFormState === 'edit') {
+            taskManager.editTask(editedTask, name, description, assignedTo, dueDate, status, priority);
+        };
+
         // Save tasks from array of tasks to local storage
         taskManager.save();
         // Display tasks from array of tasks in task list
@@ -115,42 +140,79 @@ function clearValidation () {
     taskAssignedTo.style.borderColor = '';
 };
 
-// Add 'onclick' event listener for 'Cancel' and 'Close' buttons in modal window to clear the task form and validation alerts (and red borders)
+// Add 'onclick' event listener for 'Cancel' and 'Close' buttons in task modal window to clear the task form and validation alerts (and red borders)
 taskModal.addEventListener('click', (event) => {
-    if(event.target.id === 'cancel-btn' || event.target.id === 'close') {
+    if(event.target.id === 'cancelBtn' || event.target.id === 'close') {
         clearValidation();
         taskForm.reset();
     };
 });
 
-// Add 'onclick' event listener for 'DONE' and 'Delete' buttons
+// Add 'onclick' event listener for 'Delete', 'Edit' and change status buttons
 taskList.addEventListener('click', (event) => {
-    // If 'DONE' button was clicked, change status to DONE  
-    if(event.target.classList.contains('done-button')){
-        const button = event.target;
+    // If 'Delete' button was clicked, delete task
+    if (event.target.id === 'deleteTaskBtn') {
         // Get the parent task
-        const parentTask = button.parentElement.parentElement;
-        // Garantee the return of the parent task id as a number
+        const parentTask = event.target.parentElement.parentElement.parentElement;
+        // Add 'onclick' event listener for 'Delete' button in delete modal window
+        deleteModalBtn.addEventListener('click', () => {
+            // Get the task id of the parent task
+            const parentTaskId = Number(parentTask.id);
+            // Delete the task from array of tasks
+            taskManager.deleteTask(parentTaskId);
+            // Save tasks from array of tasks to local storage 
+            taskManager.save();
+            // Display tasks from array of tasks in task list
+            taskManager.display();
+        });
+    };
+
+    // If 'Edit' button was clicked, edit task in task modal window
+    if (event.target.id === 'editTaskBtn') {
+        // Change task modal window title to 'Edit Task'
+        taskModalTitle.innerHTML = 'Edit Task';
+        // Change task form state to 'edit'
+        taskFormState = 'edit';
+        // Get the parent task
+        const parentTask = event.target.parentElement.parentElement.parentElement;
+        // Get the task id of the parent task
+        const parentTaskId = Number(parentTask.id);
+        // Find the task that matches the parent task id
+        editedTask = taskManager.getTaskById(parentTaskId);
+        // Fill task form fields with values of found task
+        taskName.value = editedTask.name;
+        taskDescription.value = editedTask.description;
+        taskAssignedTo.value = editedTask.assignedTo;
+        taskDueDate.value = editedTask.dueDate;
+        taskStatus.value = editedTask.status;
+        if (editedTask.priority === 'High') {
+            taskHighPriority.checked = true;
+        } else if (editedTask.priority  === 'Medium') {
+            taskMediumPriority.checked = true;
+        } else if (editedTask.priority  === 'Low') {
+            taskLowPriority.checked = true;
+        };
+    };
+
+    // If one of change status buttons was clicked, change status to corresponding one
+    if (event.target.id === 'radioToDo' || event.target.id === 'radioInProgress' || event.target.id === 'radioReview' || event.target.id === 'radioDone') {
+        // Get the parent task
+        const parentTask = event.target.parentElement.parentElement.parentElement.parentElement;
+        // Get the task id of the parent task
         const parentTaskId = Number(parentTask.id);
         // Find the task that matches the parent task id
         const task = taskManager.getTaskById(parentTaskId);
-        // Change the task status to DONE in the array of tasks
-        task.status = 'DONE';
+        // Change the task status in the array of tasks
+        if (event.target.id === 'radioToDo') {
+            task.status = 'TODO';
+        } else if (event.target.id === 'radioInProgress') {
+            task.status = 'IN PROGRESS';
+        } else if (event.target.id === 'radioReview') {
+            task.status = 'REVIEW';
+        } else if (event.target.id === 'radioDone') {
+            task.status = 'DONE';
+        };
         // Save tasks from array of tasks to local storage
-        taskManager.save();
-        // Display tasks from array of tasks in task list
-        taskManager.display();
-    };
-
-    // If 'Delete' button was clicked, delete task
-    if (event.target.classList.contains('delete-button')) {
-        // Get the parent task
-        const parentTask = event.target.parentElement.parentElement.parentElement;
-        // Get the task id of the parent task.
-        const taskId = Number(parentTask.id);
-        // Delete the task from array of tasks
-        taskManager.deleteTask(taskId);
-        // Save tasks from array of tasks to local storage 
         taskManager.save();
         // Display tasks from array of tasks in task list
         taskManager.display();
@@ -158,10 +220,16 @@ taskList.addEventListener('click', (event) => {
 });
 
 // Add 'onclick' event listener for 'Clear task list' button
-clearStorageBtn.addEventListener('click', () => {
+clearStorageModalBtn.addEventListener('click', () => {
     localStorage.clear();
     taskManager.load();
     taskManager.display();
+});
+
+// Add 'onclick' event listener for 'Add new task' button to change task modal window title to 'New Task' and task form state to 'add'
+newTaskBtn.addEventListener('click', () => {
+    taskModalTitle.innerHTML = 'New Task';
+    taskFormState = 'add';
 });
 
 // Setting date's min value:
