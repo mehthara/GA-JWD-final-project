@@ -16,7 +16,7 @@ const newTaskBtn = document.getElementById('newTaskBtn');
 // Select task list
 const taskList = document.querySelector('#taskList');
 
-// Select 'Delete' button in delete modal window
+// Select 'Delete' button in delete modal window ??????
 const deleteModalBtn = document.getElementById('deleteModalBtn');
 
 // Select task modal window
@@ -31,7 +31,7 @@ const taskForm = document.querySelector('#taskForm');
 // Create variable to store task form state - 'add' or 'edit'
 let taskFormState;
 
-// 
+// Create variable to store edited task object (will be defined in task list onclick event listener and passed to edit task function)
 let editedTask;
 
 // Select the inputs
@@ -235,77 +235,34 @@ newTaskBtn.addEventListener('click', () => {
 // Setting date's min value:
 let today = new Date();
 const dd = today.getDate();
-const mm = today.getMonth()+1; 
 //January is 0!
+const mm = today.getMonth()+1; 
 const yyyy = today.getFullYear();
 today = yyyy+'-'+'0'+mm+'-'+dd;
 taskDueDate.setAttribute('min',today);
- console.log(taskDueDate);
 
 // Display greeting in header
-
-// const date = today.getDate();
-// const month = today.getMonth();
-// function displayMonth(month) {
-//     switch(month) {
-//     case 0: return 'January'; break;
-//     case 1: return 'February'; break;
-//     case 2: return 'March'; break;
-//     case 3: return 'April'; break;
-//     case 4: return 'May'; break;
-//     case 5: return 'June'; break;
-//     case 6: return 'July'; break;
-//     case 7: return 'August'; break;
-//     case 8: return 'September'; break;
-//     case 9: return 'October'; break;
-//     case 10: return 'November'; break;
-//     case 11: return 'Decemeber'; break;
-//     default: return 'Invalid'; break;
-//     }
-// };
-// const monthName = displayMonth(month);
-// const year = today.getFullYear();
-
-// let minute = today.getMinutes();
 let greeting;
-// let ampm;
+
 function time(time) {
     if (time <= 11) {
         greeting = "Good Morning!";
-        // ampm = "am";
     } else if (time > 11 && time < 18) {
         greeting = "Good Afternoon!";
-        // ampm = "pm";
-        // if (time >= 13) {
-        // timeNow = time - 12;
-        // };
     } else {
         greeting = "Good Night!";
-        // ampm = "pm";
-        // timeNow = time - 12;
     };
-    // if (minute < 10) {
-    //     minute = '0' + minute;
-    // };
 };
-
 
 function displayGreeting() {
     const today = new Date();
-    let timeNow = today.getHours();
-    time(timeNow);
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const currentTime = today.getHours();
+    time(currentTime);
+    const options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
     const dateNow = today.toLocaleDateString(undefined, options);
-    const currentTime = today.toLocaleTimeString('en-US');
-    let greet = greeting + " Today is " + dateNow + " and the time is " + currentTime;
+    const timeNow = today.toLocaleTimeString('en-US');
+    let greet = greeting + " Today is " + dateNow + " and the time is " + timeNow;
     document.getElementById("greetMe").innerHTML = greet;
 };
 
 setInterval(displayGreeting, 1000);
-
-// function myTimer() {
-//   //var d = new Date();
-//   //var t = d.toLocaleTimeString();
-//   document.getElementById("demo").innerHTML = currentTime;
-// }
-//displayGreeting();
