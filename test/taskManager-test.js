@@ -47,15 +47,11 @@ describe("TaskManager", () => {
       dueDate: "2021-01-20",
       status: "TODO",
       priority: "High" };
-      
       const inputTaskId = Number(taskManager.currentId);
       //exercise
       const task = taskManager.getTaskById(inputTaskId);
-        
       //verify
       assert.strictEqual(task.id,inputTaskId);
-      
-    })
-  })
-  
+    });
+  });
 });
