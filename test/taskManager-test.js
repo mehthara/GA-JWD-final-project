@@ -7,12 +7,12 @@ describe("TaskManager", () => {
       //setup
       const taskManager = new TaskManager();
       let len = taskManager.tasks.length;
-  
+      console.log(len);
       //exercise
       taskManager.addTask();
-  
+      console.log(taskManager.tasks.length);
       //Verify
-      assert.ok(len <taskManager.tasks.length);
+      assert.strictEqual(len+1,taskManager.tasks.length);
     });
   });
   describe(".deleteTask", () =>{
@@ -33,7 +33,7 @@ describe("TaskManager", () => {
       taskManager.deleteTask(inputTaskId);
       console.log(taskManager.tasks.length);
       //verify
-      assert.ok(len > taskManager.tasks.length);
+      assert.strictEqual(len-1,taskManager.tasks.length);
     });
   });
   describe(".getTaskById", () =>{
